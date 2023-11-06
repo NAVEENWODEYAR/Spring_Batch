@@ -25,7 +25,7 @@ public class EmployeeController
     private Job job;
 
     @GetMapping("/test/{st}")
-    public String testPoint(String st)
+    public String testMsg(String st)
     {
         return "Hello,"+st+" welcome to Employee App.";
     }
