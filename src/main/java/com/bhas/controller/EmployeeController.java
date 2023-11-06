@@ -10,8 +10,6 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/employee")
@@ -27,7 +25,7 @@ public class EmployeeController
     @GetMapping("/test/{st}")
     public String testMsg(String st)
     {
-        return "Hello,"+st+" welcome to Employee App.";
+        return "Hello,"+st+" welcome to the Employee App.";
     }
 
     @PostMapping("/doJob")
