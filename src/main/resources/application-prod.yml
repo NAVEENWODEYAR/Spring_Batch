@@ -10,11 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sbdb?createDatabaseIfNotExist=true
     username: ${Database}
-<<<<<<< HEAD
     password: ${Password}
-=======
-    password: boss
->>>>>>> 73daf6f6738c8f74543df13191cda271fe3be2a4
   jpa:
     hibernate:
       ddl-auto: update
