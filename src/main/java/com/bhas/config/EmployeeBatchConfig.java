@@ -16,9 +16,12 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -26,8 +29,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 @AllArgsConstructor
 public class EmployeeBatchConfig
 {
-
+    @Autowired
     private JobBuilder jobBuilder;
+
     private StepBuilder stepBuilder;
     private EmployeeRepo employeeRepo;
 
@@ -89,16 +93,27 @@ public class EmployeeBatchConfig
                         .<Employee,Employee>chunk(20,platformTransactionManager)
                         .reader(reader())
                         .writer(employeeRepositoryItemWriter())
+                        .taskExecutor(taskExecutor())
                         .build();
     }
 
     // 5. Create Job,
     @Bean
-    public Job job(JobRepository jobRepository,Step step)
+    public Job  job(JobRepository jobRepository,Step step)
     {
         return new JobBuilder("sampleJob",jobRepository)
                 .start(step)
                 .build();
+    }
+
+
+     // to  make it asynchronous,
+    public TaskExecutor taskExecutor()
+    {
+        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
+                                asyncTaskExecutor.setConcurrencyLimit(50);
+
+        return asyncTaskExecutor;
     }
 
 }
